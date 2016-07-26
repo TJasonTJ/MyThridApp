@@ -22,7 +22,9 @@ public class SplashPageAdapter extends PagerAdapter{
                 new LeadPage2(context)
         };
     }
-
+    public View getView(int position) {
+        return views[position];
+    }
     @Override
     public int getCount() {
         return views.length;

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.feicuiedu.gitdroid.Adapter.SplashPageAdapter;
 import com.feicuiedu.gitdroid.Base.BaseFragment;
+import com.feicuiedu.gitdroid.FragmentLayout.LeadPage2;
 import com.feicuiedu.gitdroid.R;
 
 import butterknife.BindColor;
@@ -108,7 +109,11 @@ public class SplashPageFragment extends BaseFragment {
 
         @Override
         public void onPageSelected(int position) {
-
+            // 当显示出最后一个pager时，播放它自己的动画
+            if(position==2){
+                LeadPage2 page2= (LeadPage2) adapter.getView(position);
+                page2.showAnimation();
+            }
         }
 
         @Override
