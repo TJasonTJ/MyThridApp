@@ -1,14 +1,21 @@
 package com.feicuiedu.gitdroid.Activity;
 
+
+import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.feicuiedu.gitdroid.Adapter.HotRepoAdapter;
 import com.feicuiedu.gitdroid.Base.BaseActivity;
+import com.feicuiedu.gitdroid.Fragment.HotRepoFragment;
 import com.feicuiedu.gitdroid.R;
 
 import butterknife.BindView;
@@ -25,6 +32,7 @@ public class HomeActivity extends BaseActivity {
     @BindView(R.id.drawerLayout)
     DrawerLayout drawerLayout;
 
+    private HotRepoFragment hotRepoFragment;
     @Override
     public void setLayout() {
         setContentView(R.layout.activity_main);
@@ -32,6 +40,11 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     public void getView() {
+        hotRepoFragment=new HotRepoFragment();
+    }
+
+    @Override
+    public void setView() {
         navigationView.setNavigationItemSelectedListener(listener);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -40,13 +53,15 @@ public class HomeActivity extends BaseActivity {
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        replaceFragment(hotRepoFragment);
     }
 
-    @Override
-    public void setView() {
-
+    private void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container,fragment);
+        fragmentTransaction.commit();
     }
-
     private NavigationView.OnNavigationItemSelectedListener listener = new NavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(MenuItem item) {
@@ -66,7 +81,8 @@ public class HomeActivity extends BaseActivity {
                 case R.id.tips_share:
                     break;
             }
-            return false;
+            // 返回true，代表将该菜单项变为checked状态
+            return true;
         }
     };
 

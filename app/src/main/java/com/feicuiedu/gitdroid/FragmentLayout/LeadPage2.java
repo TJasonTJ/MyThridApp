@@ -30,6 +30,7 @@ public class LeadPage2 extends FrameLayout {
     @BindView(R.id.tvIntroduction)
     TextView tvIntroduction;
 
+
     public LeadPage2(Context context) {
         this(context, null);
     }
@@ -46,9 +47,17 @@ public class LeadPage2 extends FrameLayout {
     public void init() {
         LayoutInflater.from(getContext()).inflate(R.layout.content_pager_2, this, true);
         ButterKnife.bind(this);
+        HintAnimation();
+    }
+    public void HintAnimation(){
         ivBubble1.setVisibility(View.GONE);
         ivBubble2.setVisibility(View.GONE);
         ivBubble3.setVisibility(View.GONE);
+    }
+    public void Show(){
+        ivBubble1.setVisibility(View.VISIBLE);
+        ivBubble2.setVisibility(View.VISIBLE);
+        ivBubble3.setVisibility(View.VISIBLE);
     }
     /** 用来显示当前页面内三张图像的进入动画，只显示一次*/
     public void showAnimation(){

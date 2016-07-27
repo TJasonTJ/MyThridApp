@@ -37,7 +37,7 @@ public class SplashPageFragment extends BaseFragment {
     int colorYellow;
     @BindView(R.id.ivPhoneFont)
     ImageView ivPhoneFont;
-
+    private boolean mflag=false;
     @Override
     public int setLayout() {
         return R.layout.fragment_splash_pager;
@@ -110,9 +110,18 @@ public class SplashPageFragment extends BaseFragment {
         @Override
         public void onPageSelected(int position) {
             // 当显示出最后一个pager时，播放它自己的动画
-            if(position==2){
-                LeadPage2 page2= (LeadPage2) adapter.getView(position);
-                page2.showAnimation();
+
+            if(mflag){
+                if(position==2) {
+                    LeadPage2 page2 = (LeadPage2) adapter.getView(position);
+                    page2.Show();
+                }
+            }else{
+                if(position==2){
+                    LeadPage2 page2= (LeadPage2) adapter.getView(position);
+                    page2.showAnimation();
+                    mflag=true;
+                }
             }
         }
 
