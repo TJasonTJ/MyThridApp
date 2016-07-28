@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.feicuiedu.gitdroid.Base.BaseFragment;
+import com.feicuiedu.gitdroid.Interface.RepoListInterface;
 import com.feicuiedu.gitdroid.R;
 import com.feicuiedu.gitdroid.utils.RepoListPresenter;
 
@@ -24,7 +25,7 @@ import in.srain.cube.views.ptr.header.StoreHouseHeader;
 /**
  * Created by TJ on 2016/7/27.
  */
-public class RepoListFragment extends BaseFragment {
+public class RepoListFragment extends BaseFragment implements RepoListInterface{
     @BindView(R.id.lvRepos)
     ListView lvRepos;
     @BindView(R.id.ptrClassicFrameLayout)
@@ -71,24 +72,29 @@ public class RepoListFragment extends BaseFragment {
         ptrClassicFrameLayout.addPtrUIHandler(header);
         ptrClassicFrameLayout.setBackgroundResource(R.color.colorRefresh);
     }
+        @Override
         public void showContentView(){
             ptrClassicFrameLayout.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
             errorView.setVisibility(View.GONE);
         }
+    @Override
         public void showErrorView(String errorMsg){
             ptrClassicFrameLayout.setVisibility(View.GONE);
             emptyView.setVisibility(View.GONE);
             errorView.setVisibility(View.VISIBLE);
         }
+    @Override
         public void showEmptyView(){
              ptrClassicFrameLayout.setVisibility(View.GONE);
              emptyView.setVisibility(View.VISIBLE);
             errorView.setVisibility(View.GONE);
     }
+    @Override
         public void showMessage(String msg){
 
         }
+    @Override
         public void stopRefresh(){
             ptrClassicFrameLayout.refreshComplete();
         }

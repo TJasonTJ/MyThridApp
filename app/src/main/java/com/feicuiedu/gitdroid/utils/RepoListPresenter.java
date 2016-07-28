@@ -3,6 +3,7 @@ package com.feicuiedu.gitdroid.utils;
 import android.os.AsyncTask;
 
 import com.feicuiedu.gitdroid.Fragment.RepoListFragment;
+import com.feicuiedu.gitdroid.Interface.RepoListInterface;
 
 import java.util.ArrayList;
 
@@ -10,11 +11,11 @@ import java.util.ArrayList;
  * Created by TJ on 2016/7/27.
  */
 public class RepoListPresenter {
-    private RepoListFragment repoListFragment;
+    private RepoListInterface repoListInterface;
     private int count;
 
-    public RepoListPresenter(RepoListFragment repoListFragment) {
-        this.repoListFragment = repoListFragment;
+    public RepoListPresenter(RepoListInterface repoListInterface) {
+        this.repoListInterface = repoListInterface;
     }
     public void refresh(){
         new RefreshTask().execute();
@@ -38,9 +39,9 @@ public class RepoListPresenter {
             for(int i=0;i<20;i++){
                 datas.add("测试数据"+(count++));
             }
-            repoListFragment.stopRefresh();
-            repoListFragment.refreshData(datas);
-            repoListFragment.showContentView();
+            repoListInterface.stopRefresh();
+            repoListInterface.refreshData(datas);
+            repoListInterface.showContentView();
         }
     }
 }
