@@ -1,17 +1,18 @@
 package com.feicuiedu.gitdroid.Fragment;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.feicuiedu.gitdroid.Base.BaseFragment;
-import com.feicuiedu.gitdroid.Interface.RepoListInterface;
+import com.feicuiedu.gitdroid.FrameLayout.FooterView;
+import com.feicuiedu.gitdroid.Interface.RepoListPtrInterface;
+import com.feicuiedu.gitdroid.Interface.RepoListView;
 import com.feicuiedu.gitdroid.R;
 import com.feicuiedu.gitdroid.utils.RepoListPresenter;
+import com.mugen.Mugen;
+import com.mugen.MugenCallbacks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import in.srain.cube.views.ptr.header.StoreHouseHeader;
 /**
  * Created by TJ on 2016/7/27.
  */
-public class RepoListFragment extends BaseFragment implements RepoListInterface{
+public class RepoListPtrFragment extends BaseFragment implements RepoListView {
     @BindView(R.id.lvRepos)
     ListView lvRepos;
     @BindView(R.id.ptrClassicFrameLayout)
@@ -36,6 +37,7 @@ public class RepoListFragment extends BaseFragment implements RepoListInterface{
     TextView errorView;
     private ArrayAdapter<String> adapter;
 
+    private FooterView footerView;
     private RepoListPresenter repoListPresenter;
     @Override
     public int setLayout() {
@@ -44,6 +46,7 @@ public class RepoListFragment extends BaseFragment implements RepoListInterface{
 
     @Override
     public void getview() {
+        footerView=new FooterView(getContext());
         repoListPresenter=new RepoListPresenter(this);
     }
 
@@ -54,6 +57,26 @@ public class RepoListFragment extends BaseFragment implements RepoListInterface{
                 new ArrayList<String>());
         lvRepos.setAdapter(adapter);
         initPullToRefresh();
+        initLoadMoreScroll();
+    }
+
+    private void initLoadMoreScroll() {
+        Mugen.with(lvRepos, new MugenCallbacks() {
+            @Override
+            public void onLoadMore() {
+                repoListPresenter.loadMore();
+            }
+
+            @Override
+            public boolean isLoading() {
+                return lvRepos.getFooterViewsCount()>0&&footerView.isLoading();
+            }
+
+            @Override
+            public boolean hasLoadedAllItems() {
+                return lvRepos.getFooterViewsCount()>0&&footerView.isComplete();
+            }
+        }).start();
     }
 
     private void initPullToRefresh() {
@@ -98,9 +121,37 @@ public class RepoListFragment extends BaseFragment implements RepoListInterface{
         public void stopRefresh(){
             ptrClassicFrameLayout.refreshComplete();
         }
+
         public void refreshData(List<String> data){
             adapter.clear();
             adapter.addAll(data);
             adapter.notifyDataSetChanged();
         }
+
+    @Override
+    public void showLoadMoreLoading() {
+        if(lvRepos.getFooterViewsCount()==0){
+            lvRepos.addFooterView(footerView);
+        }
+        footerView.showLoading();
+    }
+
+    @Override
+    public void hideLoadMore() {
+        lvRepos.removeFooterView(footerView);
+    }
+
+    @Override
+    public void showLoadMoreErro(String erroMsg) {
+        if(lvRepos.getFooterViewsCount()==0){
+            lvRepos.addFooterView(footerView);
+        }
+        footerView.showError(erroMsg);
+    }
+
+    @Override
+    public void addMoreData(List<String> datas) {
+        adapter.addAll(datas);
+        adapter.notifyDataSetChanged();
+    }
 }

@@ -1,15 +1,13 @@
 package com.feicuiedu.gitdroid.Activity;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.feicuiedu.gitdroid.Base.BaseActivity;
 import com.feicuiedu.gitdroid.R;
-import com.feicuiedu.gitdroid.commons.ActivityUtils;
+import com.feicuiedu.gitdroid.Tools.ActivityUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**

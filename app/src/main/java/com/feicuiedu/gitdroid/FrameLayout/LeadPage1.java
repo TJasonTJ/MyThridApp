@@ -1,4 +1,4 @@
-package com.feicuiedu.gitdroid.FragmentLayout;
+package com.feicuiedu.gitdroid.FrameLayout;
 
 import android.content.Context;
 import android.util.AttributeSet;

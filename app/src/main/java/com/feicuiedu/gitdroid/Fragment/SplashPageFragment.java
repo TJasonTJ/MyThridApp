@@ -1,14 +1,13 @@
 package com.feicuiedu.gitdroid.Fragment;
 
 import android.animation.ArgbEvaluator;
-import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.feicuiedu.gitdroid.Adapter.SplashPageAdapter;
 import com.feicuiedu.gitdroid.Base.BaseFragment;
-import com.feicuiedu.gitdroid.FragmentLayout.LeadPage2;
+import com.feicuiedu.gitdroid.FrameLayout.LeadPage2;
 import com.feicuiedu.gitdroid.R;
 
 import butterknife.BindColor;

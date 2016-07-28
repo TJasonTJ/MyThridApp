@@ -1,4 +1,4 @@
-package com.feicuiedu.gitdroid.commons;
+package com.feicuiedu.gitdroid.Tools;
 
 /**
  * The custom utility class for log. Centralize the control of log.

@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.feicuiedu.gitdroid.Fragment.RepoListFragment;
+import com.feicuiedu.gitdroid.Fragment.RepoListPtrFragment;
 
 /**
  * Created by TJ on 2016/7/27.
@@ -16,7 +16,7 @@ public class HotRepoAdapter extends FragmentPagerAdapter{
 
     @Override
     public Fragment getItem(int position) {
-        return new RepoListFragment();
+        return new RepoListPtrFragment();
     }
 
     @Override

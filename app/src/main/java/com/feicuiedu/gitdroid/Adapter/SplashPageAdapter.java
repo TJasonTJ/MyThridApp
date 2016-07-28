@@ -5,9 +5,9 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.feicuiedu.gitdroid.FragmentLayout.LeadPage0;
-import com.feicuiedu.gitdroid.FragmentLayout.LeadPage1;
-import com.feicuiedu.gitdroid.FragmentLayout.LeadPage2;
+import com.feicuiedu.gitdroid.FrameLayout.LeadPage0;
+import com.feicuiedu.gitdroid.FrameLayout.LeadPage1;
+import com.feicuiedu.gitdroid.FrameLayout.LeadPage2;
 
 /**
  * Created by TJ on 2016/7/26.

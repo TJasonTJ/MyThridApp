@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by TJ on 2016/7/28.
  */
-public interface RepoListInterface {
+public interface RepoListPtrInterface {
     public void showContentView();
     public void showErrorView(String errorMsg);
     public void showEmptyView();
