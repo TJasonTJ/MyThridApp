@@ -38,6 +38,8 @@ public class SplashActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnLogin:
+                activityUtils.startActivity(LoginActivity.class);
+                finish();
                 break;
             case R.id.btnEnter:
                 activityUtils.startActivity(HomeActivity.class);

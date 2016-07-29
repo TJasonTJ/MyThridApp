@@ -1,6 +1,7 @@
 package com.feicuiedu.gitdroid.utils;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.feicuiedu.gitdroid.Interface.RepoListView;
 import com.feicuiedu.gitdroid.NetWork.GitHubApi;
@@ -28,10 +29,10 @@ public class RepoListPresenter {
     }
     public void refresh(){
 //        new RefreshTask().execute();
-        GitHubClient gitHubClient=new GitHubClient();
-        GitHubApi gitHubApi=gitHubClient.getGitHubApi();
-        Call<ResponseBody> call=gitHubApi.getRetrofitContributors();
-        call.enqueue(refreshCallback);
+//        GitHubClient gitHubClient=new GitHubClient();
+//        GitHubApi gitHubApi=gitHubClient.getGitHubApi();
+//        Call<ResponseBody> call=gitHubApi.getRetrofitContributors();
+//        call.enqueue(refreshCallback);
     }
 
     private final Callback<ResponseBody> refreshCallback =new Callback<ResponseBody>() {
@@ -46,6 +47,7 @@ public class RepoListPresenter {
                     return;
                 }
                 String content =body.string();
+                Log.i("msg",content);
                 repoListView.showContentView();
             } catch (IOException e) {
 //                e.printStackTrace();
