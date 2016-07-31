@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by TJ on 2016/7/29.
  */
 public class AccessTokenResult {
-    @SerializedName("access token")
+    @SerializedName("access_token")
     private String accessToken;
     @SerializedName("scope")
     private String scope;
@@ -24,4 +24,6 @@ public class AccessTokenResult {
     public String getTokenType() {
         return tokenType;
     }
+
+
 }

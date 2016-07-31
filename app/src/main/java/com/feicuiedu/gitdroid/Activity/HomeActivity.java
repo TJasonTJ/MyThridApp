@@ -11,12 +11,19 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.feicuiedu.gitdroid.Adapter.HotRepoAdapter;
 import com.feicuiedu.gitdroid.Base.BaseActivity;
 import com.feicuiedu.gitdroid.Fragment.HotRepoFragment;
 import com.feicuiedu.gitdroid.R;
+import com.feicuiedu.gitdroid.Tools.ActivityUtils;
+import com.feicuiedu.gitdroid.utils.UserRepo;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +40,9 @@ public class HomeActivity extends BaseActivity {
     DrawerLayout drawerLayout;
 
     private HotRepoFragment hotRepoFragment;
+    private Button btnLogin;
+    private ImageView ivIcon;
+    private ActivityUtils activityUtils;
     @Override
     public void setLayout() {
         setContentView(R.layout.activity_main);
@@ -40,6 +50,7 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     public void getView() {
+        activityUtils=new ActivityUtils(this);
         hotRepoFragment=new HotRepoFragment();
     }
 
@@ -47,12 +58,21 @@ public class HomeActivity extends BaseActivity {
     public void setView() {
         navigationView.setNavigationItemSelectedListener(listener);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        drawerLayout.addDrawerListener(toggle);
+        btnLogin=ButterKnife.findById(navigationView.getHeaderView(0),R.id.btnLogin);
+        ivIcon=ButterKnife.findById(navigationView.getHeaderView(0),R.id.ivIcon);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activityUtils.startActivity(LoginActivity.class);
+                finish();
+            }
+        });
         replaceFragment(hotRepoFragment);
     }
 
@@ -85,6 +105,21 @@ public class HomeActivity extends BaseActivity {
             return true;
         }
     };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("msg","执行 ");
+        if(UserRepo.isEmpty()){
+            btnLogin.setText(R.string.login_github);
+            return;
+        }
+        btnLogin.setText(R.string.switch_account);
+        getSupportActionBar().setTitle(UserRepo.getUser().getName());
+        String photoUrl=UserRepo.getUser().getAvatar();
+        ImageLoader.getInstance().displayImage(photoUrl,ivIcon);
+        Log.d("msg","名字："+UserRepo.getUser().getName());
+    }
 
     @Override
     public void onBackPressed() {
