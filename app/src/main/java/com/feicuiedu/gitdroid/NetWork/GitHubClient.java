@@ -1,13 +1,18 @@
 package com.feicuiedu.gitdroid.NetWork;
 
 import com.feicuiedu.gitdroid.utils.AccessTokenResult;
+import com.feicuiedu.gitdroid.utils.Language;
+import com.feicuiedu.gitdroid.utils.RepoResult;
 import com.feicuiedu.gitdroid.utils.User;
+
+import java.sql.ResultSet;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Field;
+import retrofit2.http.Query;
 
 /**
  * Created by TJ on 2016/7/28.
@@ -48,5 +53,9 @@ public class GitHubClient implements GitHubApi{
     @Override
     public Call<User> getUserInfo(){
         return gitHubApi.getUserInfo();
+    }
+    @Override
+    public Call<RepoResult> searchRepos(@Query("q")String query,@Query("page")int pageId){
+        return gitHubApi.searchRepos(query,pageId);
     }
 }

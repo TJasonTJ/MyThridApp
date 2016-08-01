@@ -1,6 +1,7 @@
 package com.feicuiedu.gitdroid.NetWork;
 
 import com.feicuiedu.gitdroid.utils.AccessTokenResult;
+import com.feicuiedu.gitdroid.utils.RepoResult;
 import com.feicuiedu.gitdroid.utils.User;
 
 import okhttp3.ResponseBody;
@@ -11,6 +12,7 @@ import retrofit2.http.GET;
 
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 /**
  * Created by TJ on 2016/7/28.
@@ -34,6 +36,9 @@ public interface GitHubApi {
 
     @GET("user")
     Call<User> getUserInfo();
+
+    @GET("search/repositories")
+    Call<RepoResult> searchRepos(@Query("q")String query,@Query("page") int pageId);
 //    @GET("repos/square/retrofit/contributors")
 //    Call<ResponseBody> getRetrofitContributors();
 

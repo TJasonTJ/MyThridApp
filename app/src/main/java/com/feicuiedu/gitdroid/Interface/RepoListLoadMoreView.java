@@ -1,5 +1,7 @@
 package com.feicuiedu.gitdroid.Interface;
 
+import com.feicuiedu.gitdroid.utils.Repo;
+
 import java.util.List;
 
 /**
@@ -12,5 +14,5 @@ public interface RepoListLoadMoreView {
 
     void showLoadMoreErro(String erroMsg);
 
-    void addMoreData(List<String> datas);
+    void addMoreData(List<Repo> datas);
 }

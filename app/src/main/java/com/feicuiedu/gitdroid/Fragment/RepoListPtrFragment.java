@@ -1,15 +1,20 @@
 package com.feicuiedu.gitdroid.Fragment;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.feicuiedu.gitdroid.Adapter.RepoListAdapter;
 import com.feicuiedu.gitdroid.Base.BaseFragment;
 import com.feicuiedu.gitdroid.FrameLayout.FooterView;
 import com.feicuiedu.gitdroid.Interface.RepoListPtrInterface;
 import com.feicuiedu.gitdroid.Interface.RepoListView;
 import com.feicuiedu.gitdroid.R;
+import com.feicuiedu.gitdroid.Tools.ActivityUtils;
+import com.feicuiedu.gitdroid.utils.Language;
+import com.feicuiedu.gitdroid.utils.Repo;
 import com.feicuiedu.gitdroid.utils.RepoListPresenter;
 import com.mugen.Mugen;
 import com.mugen.MugenCallbacks;
@@ -35,10 +40,24 @@ public class RepoListPtrFragment extends BaseFragment implements RepoListView {
     TextView emptyView;
     @BindView(R.id.errorView)
     TextView errorView;
-    private ArrayAdapter<String> adapter;
+    private RepoListAdapter adapter;
 
+    private static final String KEY_LANGUAGE="key_language";
     private FooterView footerView;
     private RepoListPresenter repoListPresenter;
+    private ActivityUtils activityUtils;
+
+    private Language getLanguage(){
+        return (Language) getArguments().getSerializable(KEY_LANGUAGE);
+    }
+    public static RepoListPtrFragment getInstance(Language language){
+        RepoListPtrFragment fragment=new RepoListPtrFragment();
+        Bundle bundle=new Bundle();
+        bundle.putSerializable(KEY_LANGUAGE,language);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @Override
     public int setLayout() {
         return R.layout.fragment_repo_list;
@@ -46,15 +65,15 @@ public class RepoListPtrFragment extends BaseFragment implements RepoListView {
 
     @Override
     public void getview() {
+        activityUtils=new ActivityUtils(this);
         footerView=new FooterView(getContext());
-        repoListPresenter=new RepoListPresenter(this);
+        repoListPresenter=new RepoListPresenter(this,getLanguage());
+
+        adapter=new RepoListAdapter();
     }
 
     @Override
     public void setview() {
-        adapter = new ArrayAdapter<String>(
-                getContext(), android.R.layout.simple_list_item_1,
-                new ArrayList<String>());
         lvRepos.setAdapter(adapter);
         initPullToRefresh();
         initLoadMoreScroll();
@@ -115,17 +134,16 @@ public class RepoListPtrFragment extends BaseFragment implements RepoListView {
     }
     @Override
         public void showMessage(String msg){
-
+            activityUtils.showToast(msg);
         }
     @Override
         public void stopRefresh(){
             ptrClassicFrameLayout.refreshComplete();
         }
 
-        public void refreshData(List<String> data){
+        public void refreshData(List<Repo> datas){
             adapter.clear();
-            adapter.addAll(data);
-            adapter.notifyDataSetChanged();
+            adapter.addAll(datas);
         }
 
     @Override
@@ -150,8 +168,7 @@ public class RepoListPtrFragment extends BaseFragment implements RepoListView {
     }
 
     @Override
-    public void addMoreData(List<String> datas) {
+    public void addMoreData(List<Repo> datas) {
         adapter.addAll(datas);
-        adapter.notifyDataSetChanged();
     }
 }

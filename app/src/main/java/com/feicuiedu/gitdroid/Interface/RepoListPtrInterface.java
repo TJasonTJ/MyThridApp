@@ -2,6 +2,8 @@ package com.feicuiedu.gitdroid.Interface;
 
 import android.view.View;
 
+import com.feicuiedu.gitdroid.utils.Repo;
+
 import java.util.List;
 
 /**
@@ -13,5 +15,5 @@ public interface RepoListPtrInterface {
     public void showEmptyView();
     public void showMessage(String msg);
     public void stopRefresh();
-    public void refreshData(List<String> data);
+    public void refreshData(List<Repo> data);
 }

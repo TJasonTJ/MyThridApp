@@ -26,7 +26,7 @@ public class HotRepoFragment extends BaseFragment {
 
     @Override
     public void getview() {
-        hotRepoAdapter=new HotRepoAdapter(getFragmentManager());
+        hotRepoAdapter=new HotRepoAdapter(getFragmentManager(),getContext());
     }
     @Override
     public void setview() {
