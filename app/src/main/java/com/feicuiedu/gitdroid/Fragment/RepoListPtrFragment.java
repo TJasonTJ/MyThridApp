@@ -2,10 +2,12 @@ package com.feicuiedu.gitdroid.Fragment;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.feicuiedu.gitdroid.Activity.RepoInfoActivity;
 import com.feicuiedu.gitdroid.Adapter.RepoListAdapter;
 import com.feicuiedu.gitdroid.Base.BaseFragment;
 import com.feicuiedu.gitdroid.FrameLayout.FooterView;
@@ -70,11 +72,20 @@ public class RepoListPtrFragment extends BaseFragment implements RepoListView {
         repoListPresenter=new RepoListPresenter(this,getLanguage());
 
         adapter=new RepoListAdapter();
+
     }
 
     @Override
     public void setview() {
         lvRepos.setAdapter(adapter);
+        lvRepos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Repo repo = adapter.getItem(position);
+                RepoInfoActivity.open(getContext(),repo);
+            }
+        });
+
         initPullToRefresh();
         initLoadMoreScroll();
     }

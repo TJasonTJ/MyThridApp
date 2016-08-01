@@ -2,10 +2,12 @@ package com.feicuiedu.gitdroid.utils;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by TJ on 2016/8/1.
  */
-public class Repo {
+public class Repo implements Serializable{
     private int id;
     private String name;
     @SerializedName("full_name")
