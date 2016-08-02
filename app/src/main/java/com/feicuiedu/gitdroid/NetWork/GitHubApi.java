@@ -4,6 +4,7 @@ import com.feicuiedu.gitdroid.utils.AccessTokenResult;
 import com.feicuiedu.gitdroid.utils.RepoContentResult;
 import com.feicuiedu.gitdroid.utils.RepoResult;
 import com.feicuiedu.gitdroid.utils.User;
+import com.feicuiedu.gitdroid.utils.UsersResult;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -59,5 +60,11 @@ public interface GitHubApi {
     @POST("/markdown/raw")
     Call<ResponseBody> markDown(@Body RequestBody body);
 
+    @GET("/search/users")
+    Call<UsersResult> searchUsers(@Query("q")String query,
+                                  @Query("page")int pageId);
+
+    @GET("/users/{login}")
+    Call<User> getUser(@Path("login")String login);
 
 }

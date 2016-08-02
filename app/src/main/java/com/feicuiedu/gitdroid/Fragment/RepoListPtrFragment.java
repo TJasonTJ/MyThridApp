@@ -88,6 +88,13 @@ public class RepoListPtrFragment extends BaseFragment implements RepoListView {
 
         initPullToRefresh();
         initLoadMoreScroll();
+        if (adapter.getCount() == 0) {
+            ptrClassicFrameLayout.postDelayed(new Runnable() {
+                @Override public void run() {
+                    ptrClassicFrameLayout.autoRefresh();
+                }
+            }, 200);
+        }
     }
 
     private void initLoadMoreScroll() {

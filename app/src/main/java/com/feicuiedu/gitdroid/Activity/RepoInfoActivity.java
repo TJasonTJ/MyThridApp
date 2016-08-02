@@ -66,6 +66,7 @@ public class RepoInfoActivity extends BaseActivity implements RepoInfoPresenter.
     @Override
     public void setView() {
         setSupportActionBar(toolbar);
+
         repo= (Repo) getIntent().getSerializableExtra(KEY_REPO);
         presenter.getReadme(repo);
         getSupportActionBar().setTitle(repo.getName());
@@ -89,7 +90,7 @@ public class RepoInfoActivity extends BaseActivity implements RepoInfoPresenter.
 
     @Override
     public void hideProgress() {
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override

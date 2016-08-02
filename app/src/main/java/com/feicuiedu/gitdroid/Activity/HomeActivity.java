@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import com.feicuiedu.gitdroid.Adapter.HotRepoAdapter;
 import com.feicuiedu.gitdroid.Base.BaseActivity;
 import com.feicuiedu.gitdroid.Fragment.HotRepoFragment;
+import com.feicuiedu.gitdroid.Fragment.HotUsersFragment;
 import com.feicuiedu.gitdroid.R;
 import com.feicuiedu.gitdroid.Tools.ActivityUtils;
 import com.feicuiedu.gitdroid.utils.UserRepo;
@@ -40,6 +41,7 @@ public class HomeActivity extends BaseActivity {
     DrawerLayout drawerLayout;
 
     private HotRepoFragment hotRepoFragment;
+    private HotUsersFragment hotUserFragment;
     private Button btnLogin;
     private ImageView ivIcon;
     private ActivityUtils activityUtils;
@@ -85,10 +87,20 @@ public class HomeActivity extends BaseActivity {
     private NavigationView.OnNavigationItemSelectedListener listener = new NavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(MenuItem item) {
+            if (item.isChecked()) {
+                item.setChecked(false);
+            }
             switch (item.getItemId()) {
                 case R.id.github_hot_repo:
+                    if (!hotRepoFragment.isAdded()) {
+                        replaceFragment(hotRepoFragment);
+                    }
                     break;
                 case R.id.github_hot_coder:
+                    if (hotUserFragment == null) hotUserFragment = new HotUsersFragment();
+                    if (!hotUserFragment.isAdded()) {
+                        replaceFragment(hotUserFragment);
+                    }
                     break;
                 case R.id.github_trend:
                     break;
@@ -101,6 +113,11 @@ public class HomeActivity extends BaseActivity {
                 case R.id.tips_share:
                     break;
             }
+            drawerLayout.post(new Runnable() {
+                @Override public void run() {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }
+            });
             // 返回true，代表将该菜单项变为checked状态
             return true;
         }

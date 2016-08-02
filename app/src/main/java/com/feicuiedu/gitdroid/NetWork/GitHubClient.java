@@ -5,6 +5,7 @@ import com.feicuiedu.gitdroid.utils.Language;
 import com.feicuiedu.gitdroid.utils.RepoContentResult;
 import com.feicuiedu.gitdroid.utils.RepoResult;
 import com.feicuiedu.gitdroid.utils.User;
+import com.feicuiedu.gitdroid.utils.UsersResult;
 
 import java.sql.ResultSet;
 
@@ -68,7 +69,14 @@ public class GitHubClient implements GitHubApi{
     public Call<RepoContentResult> getReadme(@Path("owner")String owner,@Path("repo")String repo){
         return gitHubApi.getReadme(owner, repo);
     }
-
+    @Override
+    public Call<UsersResult> searchUsers(@Query("q")String query,@Query("page")int pageId){
+        return gitHubApi.searchUsers(query, pageId);
+    }
+    @Override
+    public Call<User> getUser(@Path("login")String login){
+        return gitHubApi.getUser(login);
+    }
     @Override
     public Call<ResponseBody> markDown(@Body RequestBody body) {
         return gitHubApi.markDown(body);
