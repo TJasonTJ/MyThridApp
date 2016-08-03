@@ -19,6 +19,7 @@ import android.widget.ImageView;
 
 import com.feicuiedu.gitdroid.Adapter.HotRepoAdapter;
 import com.feicuiedu.gitdroid.Base.BaseActivity;
+import com.feicuiedu.gitdroid.Fragment.FavoriteFragment;
 import com.feicuiedu.gitdroid.Fragment.HotRepoFragment;
 import com.feicuiedu.gitdroid.Fragment.HotUsersFragment;
 import com.feicuiedu.gitdroid.R;
@@ -42,6 +43,7 @@ public class HomeActivity extends BaseActivity {
 
     private HotRepoFragment hotRepoFragment;
     private HotUsersFragment hotUserFragment;
+    private FavoriteFragment favoriteFragment;
     private Button btnLogin;
     private ImageView ivIcon;
     private ActivityUtils activityUtils;
@@ -54,6 +56,7 @@ public class HomeActivity extends BaseActivity {
     public void getView() {
         activityUtils=new ActivityUtils(this);
         hotRepoFragment=new HotRepoFragment();
+        favoriteFragment=new FavoriteFragment();
     }
 
     @Override
@@ -105,6 +108,12 @@ public class HomeActivity extends BaseActivity {
                 case R.id.github_trend:
                     break;
                 case R.id.arsenal_my_repo:
+                    if(favoriteFragment==null){
+                        favoriteFragment=new FavoriteFragment();
+                    }
+                    if(!favoriteFragment.isAdded()){
+                        replaceFragment(favoriteFragment);
+                    }
                     break;
                 case R.id.arsenal_recommend:
                     break;
