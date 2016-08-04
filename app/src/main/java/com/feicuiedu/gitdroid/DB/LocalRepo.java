@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.feicuiedu.gitdroid.utils.RepoGroup;
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -29,13 +30,14 @@ public class LocalRepo {
     @DatabaseField()
     private String description;
     @DatabaseField(columnName = "start_count")
-    private String start_count;
+    private int start_count;
     @DatabaseField(columnName ="fork_count")
-    private String fork_count;
+    private int fork_count;
     @DatabaseField(columnName = "avatar_url")
     private String avatar_url;
 
     @DatabaseField(columnName = COLUMN_GROUP_ID,foreign = true,canBeNull = true)
+    @SerializedName("group")
     private RepoGroup repoGroup;
 
     public static String getColumnGroupId() {
@@ -74,19 +76,19 @@ public class LocalRepo {
         this.description = description;
     }
 
-    public String getStart_count() {
+    public int getStart_count() {
         return start_count;
     }
 
-    public void setStart_count(String start_count) {
+    public void setStart_count(int start_count) {
         this.start_count = start_count;
     }
 
-    public String getFork_count() {
+    public int getFork_count() {
         return fork_count;
     }
 
-    public void setFork_count(String fork_count) {
+    public void setFork_count(int fork_count) {
         this.fork_count = fork_count;
     }
 

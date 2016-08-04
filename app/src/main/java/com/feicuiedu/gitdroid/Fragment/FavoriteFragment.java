@@ -1,6 +1,7 @@
 package com.feicuiedu.gitdroid.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -45,6 +47,8 @@ public class FavoriteFragment extends BaseFragment implements PopupMenu.OnMenuIt
     private RepoGroupDao repoGroupDao;
     private LocalRepoDao localRepoDao;
     private FavoriteAdapter adapter;
+    private LocalRepo currentLocalRepo; // 当前操作的仓库(上下文菜单)
+    private int currentRepoGroupId; // 当前仓库类别
     @Override
     public int setLayout() {
         return R.layout.fragment_favorite;
@@ -60,7 +64,7 @@ public class FavoriteFragment extends BaseFragment implements PopupMenu.OnMenuIt
 
     @Override
     public void setview() {
-        activityUtils.showToast("size="+localRepoDao.queryForAll().size());
+        activityUtils.showToast("size=" + localRepoDao.queryForAll().size());
         listView.setAdapter(adapter);
         setDate(R.id.repo_group_all);
         registerForContextMenu(listView);
@@ -82,7 +86,10 @@ public class FavoriteFragment extends BaseFragment implements PopupMenu.OnMenuIt
     public boolean onMenuItemClick(MenuItem item) {
         String title=item.getTitle().toString();
         tvGroupType.setText(title);
-        setDate(item.getItemId());
+        currentRepoGroupId=item.getItemId();
+//        Log.d("msg","currentRepoGroupId"+currentRepoGroupId+"");
+        setDate(currentRepoGroupId);
+//        setDate(item.getItemId());
         return true;
     }
 
@@ -95,6 +102,7 @@ public class FavoriteFragment extends BaseFragment implements PopupMenu.OnMenuIt
                 adapter.setDate(localRepoDao.queryForNoGroup());
                 break;
             default:
+                Log.d("msg","数据"+localRepoDao.queryForGroupId(groupId).toString());
                 adapter.setDate(localRepoDao.queryForGroupId(groupId));
                 break;
         }
@@ -104,6 +112,10 @@ public class FavoriteFragment extends BaseFragment implements PopupMenu.OnMenuIt
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         if(v.getId()==R.id.listView){
+            AdapterView.AdapterContextMenuInfo adapterMenuInfo= (AdapterView.AdapterContextMenuInfo) menuInfo;
+            int position =adapterMenuInfo.position;
+            currentLocalRepo =adapter.getItem(position);
+
             MenuInflater menuInflater=getActivity().getMenuInflater();
             menuInflater.inflate(R.menu.menu_context_favorite,menu);
             SubMenu subMenu=menu.findItem(R.id.sub_menu_move).getSubMenu();
@@ -115,14 +127,27 @@ public class FavoriteFragment extends BaseFragment implements PopupMenu.OnMenuIt
         }
     }
 
+
+
+
+
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         int id=item.getItemId();
         if(id==R.id.delete){
+            localRepoDao.delete(currentLocalRepo);
+            setDate(currentRepoGroupId);
             return true;
         }
         int groupId=item.getGroupId();
         if(groupId==R.id.menu_group_move){
+            if(id==R.id.repo_group_no){
+                currentLocalRepo.setRepoGroup(null);
+            }else{
+                currentLocalRepo.setRepoGroup(repoGroupDao.queryForId(id));
+            }
+            localRepoDao.createOrUpdate(currentLocalRepo);
+            setDate(currentRepoGroupId);
             return true;
         }
         return super.onContextItemSelected(item);

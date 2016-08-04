@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.feicuiedu.gitdroid.Activity.RepoInfoActivity;
 import com.feicuiedu.gitdroid.Adapter.RepoListAdapter;
 import com.feicuiedu.gitdroid.Base.BaseFragment;
+import com.feicuiedu.gitdroid.DB.DBHelp;
+import com.feicuiedu.gitdroid.DB.LocalRepo;
+import com.feicuiedu.gitdroid.DB.LocalRepoDao;
 import com.feicuiedu.gitdroid.FrameLayout.FooterView;
 import com.feicuiedu.gitdroid.Interface.RepoListPtrInterface;
 import com.feicuiedu.gitdroid.Interface.RepoListView;
@@ -17,6 +20,7 @@ import com.feicuiedu.gitdroid.R;
 import com.feicuiedu.gitdroid.Tools.ActivityUtils;
 import com.feicuiedu.gitdroid.utils.Language;
 import com.feicuiedu.gitdroid.utils.Repo;
+import com.feicuiedu.gitdroid.utils.RepoConverter;
 import com.feicuiedu.gitdroid.utils.RepoListPresenter;
 import com.mugen.Mugen;
 import com.mugen.MugenCallbacks;
@@ -78,11 +82,22 @@ public class RepoListPtrFragment extends BaseFragment implements RepoListView {
     @Override
     public void setview() {
         lvRepos.setAdapter(adapter);
+
         lvRepos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Repo repo = adapter.getItem(position);
-                RepoInfoActivity.open(getContext(),repo);
+                RepoInfoActivity.open(getContext(), repo);
+            }
+        });
+        lvRepos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Repo repo=adapter.getItem(position);
+                LocalRepo localRepo= RepoConverter.convert(repo);
+                new LocalRepoDao(DBHelp.getInstance(getContext())).createOrUpdate(localRepo);
+                activityUtils.showToast("收藏成功！");
+                return true;
             }
         });
 
