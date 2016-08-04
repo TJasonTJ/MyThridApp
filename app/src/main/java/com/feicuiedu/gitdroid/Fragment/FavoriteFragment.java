@@ -1,9 +1,12 @@
 package com.feicuiedu.gitdroid.Fragment;
 
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -11,8 +14,10 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.feicuiedu.gitdroid.Adapter.FavoriteAdapter;
 import com.feicuiedu.gitdroid.Base.BaseFragment;
 import com.feicuiedu.gitdroid.DB.DBHelp;
+import com.feicuiedu.gitdroid.DB.LocalRepo;
 import com.feicuiedu.gitdroid.DB.LocalRepoDao;
 import com.feicuiedu.gitdroid.DB.RepoGroupDao;
 import com.feicuiedu.gitdroid.R;
@@ -39,6 +44,7 @@ public class FavoriteFragment extends BaseFragment implements PopupMenu.OnMenuIt
     private ActivityUtils activityUtils;
     private RepoGroupDao repoGroupDao;
     private LocalRepoDao localRepoDao;
+    private FavoriteAdapter adapter;
     @Override
     public int setLayout() {
         return R.layout.fragment_favorite;
@@ -49,11 +55,15 @@ public class FavoriteFragment extends BaseFragment implements PopupMenu.OnMenuIt
         activityUtils=new ActivityUtils(this);
         repoGroupDao=new RepoGroupDao(DBHelp.getInstance(getContext()));
         localRepoDao=new LocalRepoDao(DBHelp.getInstance(getContext()));
+        adapter=new FavoriteAdapter();
     }
 
     @Override
     public void setview() {
         activityUtils.showToast("size="+localRepoDao.queryForAll().size());
+        listView.setAdapter(adapter);
+        setDate(R.id.repo_group_all);
+        registerForContextMenu(listView);
     }
     @OnClick(R.id.btnFilter)
     public void showPopupMenu(View view){
@@ -79,14 +89,42 @@ public class FavoriteFragment extends BaseFragment implements PopupMenu.OnMenuIt
     private void setDate(int groupId) {
         switch (groupId){
             case R.id.repo_group_all:
-
+                adapter.setDate(localRepoDao.queryForAll());
                 break;
             case R.id.repo_group_no:
-
+                adapter.setDate(localRepoDao.queryForNoGroup());
                 break;
             default:
-
+                adapter.setDate(localRepoDao.queryForGroupId(groupId));
                 break;
         }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if(v.getId()==R.id.listView){
+            MenuInflater menuInflater=getActivity().getMenuInflater();
+            menuInflater.inflate(R.menu.menu_context_favorite,menu);
+            SubMenu subMenu=menu.findItem(R.id.sub_menu_move).getSubMenu();
+            List<RepoGroup> repoGroups=repoGroupDao.queryForAll();
+            for (RepoGroup repo:repoGroups
+                 ) {
+                subMenu.add(R.id.menu_group_move,repo.getId(),Menu.NONE,repo.getName());
+            }
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        int id=item.getItemId();
+        if(id==R.id.delete){
+            return true;
+        }
+        int groupId=item.getGroupId();
+        if(groupId==R.id.menu_group_move){
+            return true;
+        }
+        return super.onContextItemSelected(item);
     }
 }
