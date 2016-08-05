@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import com.feicuiedu.gitdroid.Adapter.HotRepoAdapter;
 import com.feicuiedu.gitdroid.Base.BaseActivity;
 import com.feicuiedu.gitdroid.Fragment.FavoriteFragment;
+import com.feicuiedu.gitdroid.Fragment.GankFragment;
 import com.feicuiedu.gitdroid.Fragment.HotRepoFragment;
 import com.feicuiedu.gitdroid.Fragment.HotUsersFragment;
 import com.feicuiedu.gitdroid.R;
@@ -44,6 +45,7 @@ public class HomeActivity extends BaseActivity {
     private HotRepoFragment hotRepoFragment;
     private HotUsersFragment hotUserFragment;
     private FavoriteFragment favoriteFragment;
+    private GankFragment gankFragment;
     private Button btnLogin;
     private ImageView ivIcon;
     private ActivityUtils activityUtils;
@@ -57,6 +59,7 @@ public class HomeActivity extends BaseActivity {
         activityUtils=new ActivityUtils(this);
         hotRepoFragment=new HotRepoFragment();
         favoriteFragment=new FavoriteFragment();
+        gankFragment=new GankFragment();
     }
 
     @Override
@@ -118,6 +121,10 @@ public class HomeActivity extends BaseActivity {
                 case R.id.arsenal_recommend:
                     break;
                 case R.id.tips_daily:
+                    if(gankFragment == null)gankFragment = new GankFragment();
+                    if(!gankFragment.isAdded()){
+                        replaceFragment(gankFragment);
+                    }
                     break;
                 case R.id.tips_share:
                     break;
